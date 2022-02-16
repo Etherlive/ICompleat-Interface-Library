@@ -10,7 +10,7 @@ public class UnitTest1
     [Fact]
     public async void RequestsWork()
     {
-        var t = await Request.Execucte($"api/users/{Config._instance.tenantId}/{Config._instance.companyId}");
+        var t = await Objects.Supplier.GetSuppliersUntillAllAsync();
         Assert.NotNull(t);
     }
 

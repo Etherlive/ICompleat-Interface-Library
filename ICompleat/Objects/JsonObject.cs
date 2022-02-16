@@ -4,10 +4,16 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ICompleat
+namespace ICompleat.Objects
 {
-    public class Request
+    public abstract class JsonObject
     {
+        #region Fields
+
+        protected JsonElement json;
+
+        #endregion Fields
+
         #region Methods
 
         public static async Task<JsonElement> Execucte(string path = "", string method = "GET")
