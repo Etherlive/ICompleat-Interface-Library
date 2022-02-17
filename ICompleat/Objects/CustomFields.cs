@@ -68,7 +68,13 @@ namespace ICompleat.Objects
 
         public async Task ReplaceValues(List<Field> Values)
         {
-            var d = await Execucte($"api/customfield/{Config._instance.tenantId}/{Config._instance.companyId}/{fieldid}", "POST", new { CustomFieldListItems = Values });
+            string continuationToken = "";
+
+            for (int i = 0; i < Values.Count / 100.0f; i++)
+            {
+                var d = await Execucte($"api/customfield/{Config._instance.tenantId}/{Config._instance.companyId}/{fieldid}", "POST", new { CustomFieldListItems = Values.Skip(100 * i).Take(100), ContinuationToken = continuationToken });
+                continuationToken = d.GetProperty("ContinuationToken").GetString();
+            }
             await LoadFull();
         }
 
