@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Net.Http.Json;
 
 namespace ICompleat.Objects
 {
@@ -16,7 +18,7 @@ namespace ICompleat.Objects
 
         #region Methods
 
-        public static async Task<JsonElement> Execucte(string path = "", string method = "GET")
+        public static async Task<JsonElement> Execucte(string path = "", string method = "GET", object data = null)
         {
             using (var httpClient = new HttpClient())
             {
@@ -24,6 +26,12 @@ namespace ICompleat.Objects
                 {
                     request.Headers.Add("x-api-compleat-key", Config._instance.key);
                     request.Headers.Add("x-api-version", "1");
+
+                    if (data != null)
+                    {
+                        request.Content = JsonContent.Create(data);
+                    }
+
                     var response = await httpClient.SendAsync(request);
 
                     string body = await response.Content.ReadAsStringAsync();
@@ -34,7 +42,6 @@ namespace ICompleat.Objects
                     }
                     else
                     {
-                        response.EnsureSuccessStatusCode();
                         throw new Exception(body);
                     }
                 }

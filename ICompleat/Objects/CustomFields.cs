@@ -8,11 +8,25 @@ namespace ICompleat.Objects
 {
     public class CustomFields : JsonObject
     {
+        #region Constructors
+
+        public CustomFields(JsonElement json)
+        {
+            this.json = json;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public string? fieldid
         {
             get { return json.GetProperty("Id").GetString(); }
+        }
+
+        public List<Field> Values
+        {
+            get { return this.json.GetProperty("Values").EnumerateArray().Select(x => new Field() { Code = x.GetProperty("Code").GetString(), Name = x.GetProperty("Name").GetString() }).ToList(); }
         }
 
         #endregion Properties
@@ -23,7 +37,7 @@ namespace ICompleat.Objects
         {
             var d = await Execucte($"api/customfield/{Config._instance.tenantId}/{Config._instance.companyId}/{fieldid}");
 
-            return new CustomFields() { json = d.GetProperty("CustomField") };
+            return new CustomFields(d.GetProperty("CustomField"));
         }
 
         public static async Task<CustomFields[]> GetCustomFieldsAsync()
@@ -33,9 +47,14 @@ namespace ICompleat.Objects
             List<CustomFields> s = new List<CustomFields>();
             foreach (JsonElement e in d.GetProperty("CustomFields").EnumerateArray())
             {
-                s.Add(new CustomFields() { json = e });
+                s.Add(new CustomFields(e));
             }
             return s.ToArray();
+        }
+
+        public async Task AppendValues(List<Field> Values)
+        {
+            await ReplaceValues(this.Values.Union(Values).ToList());
         }
 
         public async Task LoadFull()
@@ -47,6 +66,26 @@ namespace ICompleat.Objects
             return;
         }
 
+        public async Task ReplaceValues(List<Field> Values)
+        {
+            var d = await Execucte($"api/customfield/{Config._instance.tenantId}/{Config._instance.companyId}/{fieldid}", "POST", new { CustomFieldListItems = Values });
+            await LoadFull();
+        }
+
         #endregion Methods
+
+        #region Classes
+
+        public class Field
+        {
+            #region Properties
+
+            public string Code { get; set; }
+            public string Name { get; set; }
+
+            #endregion Properties
+        }
+
+        #endregion Classes
     }
 }

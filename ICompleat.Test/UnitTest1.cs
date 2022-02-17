@@ -15,6 +15,8 @@ public class UnitTest1
 
         await t[0].LoadFull();
         Assert.NotNull(t[0]);
+
+        await t[0].AppendValues(new System.Collections.Generic.List<Objects.CustomFields.Field> { new Objects.CustomFields.Field() { Code = "j2", Name = "Another Another Job" } });
     }
 
     [Fact]
