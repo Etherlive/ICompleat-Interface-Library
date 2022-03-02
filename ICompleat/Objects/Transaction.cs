@@ -15,21 +15,6 @@ namespace ICompleat.Objects
             get { return Status == "APPR"; }
         }
 
-        public bool IsDenied
-        {
-            get { return Status == "DEN"; }
-        }
-        public bool IsPending
-        {
-            get { return Status == "PEND"; }
-        }
-
-        public bool IsSaved
-        {
-            get { return Status == "SAV"; }
-        }
-
-
         public bool IsCreditNote
         {
             get { return Type == "CRD"; }
@@ -40,6 +25,11 @@ namespace ICompleat.Objects
             get { return Status == "DEL"; }
         }
 
+        public bool IsDenied
+        {
+            get { return Status == "DEN"; }
+        }
+
         public bool IsInvoice
         {
             get { return Type == "INV"; }
@@ -48,6 +38,16 @@ namespace ICompleat.Objects
         public bool IsOrder
         {
             get { return Type == "ORD"; }
+        }
+
+        public bool IsPending
+        {
+            get { return Status == "PEND"; }
+        }
+
+        public bool IsSaved
+        {
+            get { return Status == "SAV"; }
         }
 
         public string Status
