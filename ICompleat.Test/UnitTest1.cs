@@ -1,6 +1,5 @@
-using Xunit;
-using ICompleat;
 using System.Linq;
+using Xunit;
 
 namespace ICompleat.Test;
 
