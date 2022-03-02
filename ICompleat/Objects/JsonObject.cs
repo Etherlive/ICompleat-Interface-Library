@@ -13,7 +13,7 @@ namespace ICompleat.Objects
 
         #region Methods
 
-        public static async Task<JsonElement> Execucte(string path = "", string method = "GET", object data = null)
+        public static async Task<JsonElement> Execucte(string path = "", string method = "GET", object data = null, bool raisedAsRetry = false)
         {
             using (var httpClient = new HttpClient())
             {
@@ -33,10 +33,19 @@ namespace ICompleat.Objects
 
                     if (response.IsSuccessStatusCode)
                     {
-                        return JsonSerializer.Deserialize<JsonElement>(body);
+                        var j = JsonSerializer.Deserialize<JsonElement>(body);
+                        if (raisedAsRetry) Console.WriteLine("OK");
+                        return j;
                     }
                     else
                     {
+                        if (body.Contains("429"))
+                        {
+                            if (!raisedAsRetry) Console.Write("Rate Limited, Trying Again");
+                            Console.Write(".");
+                            Thread.Sleep(1000);
+                            return await Execucte(path, method, data, true);
+                        }
                         throw new Exception(body);
                     }
                 }
