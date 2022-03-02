@@ -12,7 +12,7 @@ namespace ICompleat.Objects
     {
         #region Fields
 
-        protected JsonElement json;
+        public JsonElement json;
 
         #endregion Fields
 
