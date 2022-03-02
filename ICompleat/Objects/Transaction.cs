@@ -6,6 +6,11 @@ namespace ICompleat.Objects
     {
         #region Properties
 
+        public string Id
+        {
+            get { return json.GetProperty("Id").GetString(); }
+        }
+
         public bool IsApproved
         {
             get { return Status == "APPR"; }
@@ -46,6 +51,24 @@ namespace ICompleat.Objects
             get { return Status == "SAV"; }
         }
 
+        public string JobId
+        {
+            get
+            {
+                if (json.TryGetProperty("Analysis", out JsonElement e))
+                {
+                    foreach (var layoutElements in e.EnumerateArray())
+                    {
+                        if (layoutElements.GetProperty("Name").GetString().Contains("Job Id"))
+                        {
+                            return layoutElements.GetProperty("Value").GetProperty("Code").GetString();
+                        }
+                    }
+                }
+                return null;
+            }
+        }
+
         public string Status
         {
             get { return json.GetProperty("Status").GetString(); }
@@ -53,7 +76,7 @@ namespace ICompleat.Objects
 
         public string SupplierName
         {
-            get { return json.GetProperty("SupplierName").GetString(); }
+            get { return json.TryGetProperty("Supplier", out JsonElement e) ? e.GetProperty("Name").GetString() : ""; }
         }
 
         public string Title
@@ -103,6 +126,12 @@ namespace ICompleat.Objects
             }
 
             return s.ToArray();
+        }
+
+        public async Task LoadDetail()
+        {
+            var d = await Execucte($"/api/transaction/{Config._instance.tenantId}/{Id}/null");
+            json = d.GetProperty("Transaction");
         }
 
         #endregion Methods
