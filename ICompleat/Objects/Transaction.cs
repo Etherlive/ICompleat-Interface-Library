@@ -8,12 +8,12 @@ namespace ICompleat.Objects
 
         public DateTime CreatedDate
         {
-            get { return json.GetProperty("Dates").GetProperty("Created").TryGetDateTime(out DateTime d) ? d : DateTime.Now; }
+            get { return json.GetProperty("Dates").TryGetProperty("Created", out JsonElement e) && e.ValueKind != JsonValueKind.Undefined ? e.TryGetDateTime(out DateTime d) ? d : DateTime.Now : DateTime.Now; }
         }
 
         public DateTime DeliveryDate
         {
-            get { return json.GetProperty("Dates").GetProperty("Delivery").TryGetDateTime(out DateTime d) ? d : DateTime.Now; }
+            get { return json.GetProperty("Dates").TryGetProperty("Delivery", out JsonElement e) && e.ValueKind != JsonValueKind.Undefined ? e.TryGetDateTime(out DateTime d) ? d : DateTime.Now : DateTime.Now; }
         }
 
         public string Id
@@ -23,7 +23,7 @@ namespace ICompleat.Objects
 
         public DateTime InvoiceDate
         {
-            get { return json.GetProperty("Dates").TryGetDateTime(out DateTime d) ? d : DateTime.Now; }
+            get { return json.GetProperty("Dates").TryGetProperty("Invoice", out JsonElement e) && e.ValueKind != JsonValueKind.Undefined ? e.TryGetDateTime(out DateTime d) ? d : DateTime.Now : DateTime.Now; }
         }
 
         public bool IsApproved
@@ -86,7 +86,7 @@ namespace ICompleat.Objects
 
         public DateTime PaymentDueDate
         {
-            get { return json.GetProperty("Dates").GetProperty("PaymentDue").TryGetDateTime(out DateTime d) ? d : DateTime.Now; }
+            get { return json.GetProperty("Dates").TryGetProperty("PaymentDue", out JsonElement e) && e.ValueKind != JsonValueKind.Undefined ? e.TryGetDateTime(out DateTime d) ? d : DateTime.Now : DateTime.Now; }
         }
 
         public string PurchaseOrderReference
