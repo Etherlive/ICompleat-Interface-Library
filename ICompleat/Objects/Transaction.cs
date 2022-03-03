@@ -6,9 +6,24 @@ namespace ICompleat.Objects
     {
         #region Properties
 
+        public DateTime CreatedDate
+        {
+            get { return json.GetProperty("Dates").GetProperty("Created").TryGetDateTime(out DateTime d) ? d : DateTime.Now; }
+        }
+
+        public DateTime DeliveryDate
+        {
+            get { return json.GetProperty("Dates").GetProperty("Delivery").TryGetDateTime(out DateTime d) ? d : DateTime.Now; }
+        }
+
         public string Id
         {
             get { return json.GetProperty("Id").GetString(); }
+        }
+
+        public DateTime InvoiceDate
+        {
+            get { return json.GetProperty("Dates").TryGetDateTime(out DateTime d) ? d : DateTime.Now; }
         }
 
         public bool IsApproved
@@ -67,6 +82,16 @@ namespace ICompleat.Objects
                 }
                 return null;
             }
+        }
+
+        public DateTime PaymentDueDate
+        {
+            get { return json.GetProperty("Dates").GetProperty("PaymentDue").TryGetDateTime(out DateTime d) ? d : DateTime.Now; }
+        }
+
+        public string PurchaseOrderReference
+        {
+            get { return json.GetProperty("References").GetProperty("PurchaseOrder").GetString(); }
         }
 
         public string Status
