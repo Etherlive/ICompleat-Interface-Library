@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Linq;
 
 namespace ICompleat.Objects
 {
@@ -82,6 +83,11 @@ namespace ICompleat.Objects
                 }
                 return null;
             }
+        }
+
+        public TransactionLine[] lines
+        {
+            get { return json.TryGetProperty("Lines", out JsonElement e) ? e.EnumerateArray().Select(x => new TransactionLine() { json = x }).ToArray() : new TransactionLine[0]; }
         }
 
         public DateTime PaymentDueDate
