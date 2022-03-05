@@ -22,6 +22,11 @@ namespace ICompleat.Objects
             get { return json.GetProperty("Id").GetString(); }
         }
 
+        public string IdentifierReference
+        {
+            get { return json.GetProperty("References").GetProperty("Identifier").GetString(); }
+        }
+
         public DateTime InvoiceDate
         {
             get { return json.GetProperty("Dates").TryGetProperty("Invoice", out JsonElement e) && e.ValueKind != JsonValueKind.Undefined ? e.TryGetDateTime(out DateTime d) ? d : DateTime.Now : DateTime.Now; }
