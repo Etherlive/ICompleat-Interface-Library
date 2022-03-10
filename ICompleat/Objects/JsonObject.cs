@@ -7,6 +7,7 @@ namespace ICompleat.Objects
     {
         #region Fields
 
+        private static Random rnd = new Random();
         public JsonElement json;
 
         #endregion Fields
@@ -34,16 +35,16 @@ namespace ICompleat.Objects
                     if (response.IsSuccessStatusCode)
                     {
                         var j = JsonSerializer.Deserialize<JsonElement>(body);
-                        if (raisedAsRetry) Console.WriteLine("OK");
+                        //if (raisedAsRetry) Console.WriteLine("OK");
                         return j;
                     }
                     else
                     {
                         if (body.Contains("429"))
                         {
-                            if (!raisedAsRetry) Console.Write("Rate Limited, Trying Again");
-                            Console.Write(".");
-                            Thread.Sleep(1000);
+                            //if (!raisedAsRetry) Console.Write("Rate Limited, Trying Again");
+                            //Console.Write(".");
+                            Thread.Sleep(((int)rnd.NextDouble()*5000) + 1000);
                             return await Execucte(path, method, data, true);
                         }
                         throw new Exception(body);

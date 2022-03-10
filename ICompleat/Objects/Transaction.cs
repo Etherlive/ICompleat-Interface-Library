@@ -80,9 +80,13 @@ namespace ICompleat.Objects
                 {
                     foreach (var layoutElements in e.EnumerateArray())
                     {
-                        if (layoutElements.GetProperty("Name").GetString().Contains("Job Id"))
+                        if (layoutElements.GetProperty("Name").GetString().Contains("Job"))
                         {
-                            return layoutElements.GetProperty("Value").GetProperty("Code").GetString();
+                            string id = layoutElements.GetProperty("Value").GetProperty("Code").GetString();
+                            if (int.TryParse(id, out int i))
+                            {
+                                return i == 0 ? null : id;
+                            }
                         }
                     }
                 }
