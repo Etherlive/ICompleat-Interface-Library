@@ -29,7 +29,7 @@ public class UnitTest1
     [Fact]
     public async void TransactionsWork()
     {
-        var t = await Objects.Transaction.GetTransactionsUntillAllAsync();
+        var t = await Objects.Transaction.GetTransactionsUntillAllAsync(Auth.PMY);
         //var k = t.Where(x => !"APPR PEND DEL".Split(' ').Contains(x.json.GetProperty("Status").GetString()));
         var sps = t.Select(x => x.Status).Distinct();
         var tps = t.Select(x => x.Type).Distinct();

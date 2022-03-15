@@ -133,29 +133,31 @@ namespace ICompleat.Objects
 
         #region Methods
 
-        public static async Task<Transaction[]> GetTransactionsAsync(int page = 1)
+        public static async Task<Transaction[]> GetTransactionsAsync(Auth auth, int page = 1)
         {
             ///api/transactions/{tenantId}/{pageNumber}/{companyId}/{userId}/{status}/{transactionType}
-            var d = await Execucte($"/api/transactions/{Config._instance.tenantId}/{page}/null/null/null/null");
+            var req = new API_Whisperer.Request() { url = $"/api/transactions/{auth.tenantId}/{page}/null/null/null/null" };
+            var d = await req.Execute(auth);
 
             List<Transaction> s = new List<Transaction>();
-            foreach (JsonElement e in d.GetProperty("Transactions").EnumerateArray())
+            foreach (JsonElement e in d.bodyAsJson.Value.GetProperty("Transactions").EnumerateArray())
             {
                 s.Add(new Transaction() { json = e });
             }
             return s.ToArray();
         }
 
-        public static async Task<Transaction[]> GetTransactionsUntillAllAsync()
+        public static async Task<Transaction[]> GetTransactionsUntillAllAsync(Auth auth)
         {
             List<Transaction> s = new List<Transaction>();
 
             int i = 1;
             while (s.Count % 20 == 0 || i == 1)
             {
-                var d = await Execucte($"/api/transactions/{Config._instance.tenantId}/{i}/null/null/null/null");
+                var req = new API_Whisperer.Request() { url = $"/api/transactions/{auth.tenantId}/{i}/null/null/null/null" };
+                var d = await req.Execute(auth);
 
-                var sup = d.GetProperty("Transactions");
+                var sup = d.bodyAsJson.Value.GetProperty("Transactions");
                 if (sup.GetArrayLength() == 0) break;
 
                 foreach (JsonElement e in sup.EnumerateArray())
@@ -168,10 +170,11 @@ namespace ICompleat.Objects
             return s.ToArray();
         }
 
-        public async Task LoadDetail()
+        public async Task LoadDetail(Auth auth)
         {
-            var d = await Execucte($"/api/transaction/{Config._instance.tenantId}/{Id}/null");
-            json = d.GetProperty("Transaction");
+            var req = new API_Whisperer.Request() { url = $"/api/transaction/{auth.tenantId}/{Id}/null" };
+            var d = await req.Execute(auth);
+            json = d.bodyAsJson.Value.GetProperty("Transaction");
         }
 
         #endregion Methods
