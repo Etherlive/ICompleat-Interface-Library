@@ -22,7 +22,7 @@ public class UnitTest1
     [Fact]
     public async void SuppliersWork()
     {
-        var t = await Objects.Supplier.GetSuppliersAsync();
+        var t = await Objects.Supplier.GetSuppliersAsync(Auth.PMY);
         Assert.NotNull(t);
     }
 

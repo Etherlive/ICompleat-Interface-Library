@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICompleat", "ICompleat\ICom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICompleat.Test", "ICompleat.Test\ICompleat.Test.csproj", "{CAC30ADB-47DB-44BB-BB29-284C94680675}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API-Whisperer", "API-Whisperer\API-Whisperer\API-Whisperer.csproj", "{E870EDD0-770D-4FA8-8B9E-1DA9D63D638B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Whisper-Tests", "API-Whisperer\Whisper-Tests\Whisper-Tests.csproj", "{EB5B67F4-4C94-443E-8325-9EE88437E3BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{CAC30ADB-47DB-44BB-BB29-284C94680675}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAC30ADB-47DB-44BB-BB29-284C94680675}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAC30ADB-47DB-44BB-BB29-284C94680675}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E870EDD0-770D-4FA8-8B9E-1DA9D63D638B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E870EDD0-770D-4FA8-8B9E-1DA9D63D638B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E870EDD0-770D-4FA8-8B9E-1DA9D63D638B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E870EDD0-770D-4FA8-8B9E-1DA9D63D638B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB5B67F4-4C94-443E-8325-9EE88437E3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB5B67F4-4C94-443E-8325-9EE88437E3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB5B67F4-4C94-443E-8325-9EE88437E3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB5B67F4-4C94-443E-8325-9EE88437E3BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

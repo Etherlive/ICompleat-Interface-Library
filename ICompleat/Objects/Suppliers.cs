@@ -1,8 +1,9 @@
 ﻿using System.Text.Json;
+using API_Whisperer;
 
 namespace ICompleat.Objects
 {
-    public class Supplier : JsonObject
+    public class Supplier : API_Whisperer.JsonObject
     {
         #region Properties
 
@@ -85,28 +86,30 @@ namespace ICompleat.Objects
 
         #region Methods
 
-        public static async Task<Supplier[]> GetSuppliersAsync(int page = 1)
+        public static async Task<Supplier[]> GetSuppliersAsync(API_Whisperer.Authentication auth, int page = 1)
         {
-            var d = await Execucte($"/api/suppliers/{Config._instance.tenantId}/{Config._instance.companyId}/{page}");
+            var req = new API_Whisperer.Request() { url = $"/api/suppliers/{Config._instance.tenantId}/{Config._instance.companyId}/{page}" };
+            var d = await req.Execute(auth);
 
             List<Supplier> s = new List<Supplier>();
-            foreach (JsonElement e in d.GetProperty("Suppliers").EnumerateArray())
+            foreach (JsonElement e in d.bodyAsJson.Value.GetProperty("Suppliers").EnumerateArray())
             {
                 s.Add(new Supplier() { json = e });
             }
             return s.ToArray();
         }
 
-        public static async Task<Supplier[]> GetSuppliersUntillAllAsync()
+        public static async Task<Supplier[]> GetSuppliersUntillAllAsync(API_Whisperer.Authentication auth)
         {
             List<Supplier> s = new List<Supplier>();
 
             int i = 1;
             while (s.Count % 100 == 0 || i == 1)
             {
-                var d = await Execucte($"/api/suppliers/{Config._instance.tenantId}/{Config._instance.companyId}/{i}");
+                var req = new Request() { url = $"/api/suppliers/{Config._instance.tenantId}/{Config._instance.companyId}/{i}" };
+                var d = await req.Execute(auth);
 
-                var sup = d.GetProperty("Suppliers");
+                var sup = d.bodyAsJson.Value.GetProperty("Suppliers");
                 if (sup.GetArrayLength() == 0) break;
 
                 foreach (JsonElement e in sup.EnumerateArray())
