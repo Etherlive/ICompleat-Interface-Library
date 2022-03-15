@@ -86,9 +86,9 @@ namespace ICompleat.Objects
 
         #region Methods
 
-        public static async Task<Supplier[]> GetSuppliersAsync(API_Whisperer.Authentication auth, int page = 1)
+        public static async Task<Supplier[]> GetSuppliersAsync(Auth auth, int page = 1)
         {
-            var req = new API_Whisperer.Request() { url = $"/api/suppliers/{Config._instance.tenantId}/{Config._instance.companyId}/{page}" };
+            var req = new API_Whisperer.Request() { url = $"/api/suppliers/{auth.tenantId}/{auth.companyId}/{page}" };
             var d = await req.Execute(auth);
 
             List<Supplier> s = new List<Supplier>();
@@ -99,14 +99,14 @@ namespace ICompleat.Objects
             return s.ToArray();
         }
 
-        public static async Task<Supplier[]> GetSuppliersUntillAllAsync(API_Whisperer.Authentication auth)
+        public static async Task<Supplier[]> GetSuppliersUntillAllAsync(Auth auth)
         {
             List<Supplier> s = new List<Supplier>();
 
             int i = 1;
             while (s.Count % 100 == 0 || i == 1)
             {
-                var req = new Request() { url = $"/api/suppliers/{Config._instance.tenantId}/{Config._instance.companyId}/{i}" };
+                var req = new Request() { url = $"/api/suppliers/{auth.tenantId}/{auth.companyId}/{i}" };
                 var d = await req.Execute(auth);
 
                 var sup = d.bodyAsJson.Value.GetProperty("Suppliers");

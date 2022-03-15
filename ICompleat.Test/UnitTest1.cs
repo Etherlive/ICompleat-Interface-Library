@@ -10,13 +10,13 @@ public class UnitTest1
     [Fact]
     public async void CustomFieldsWork()
     {
-        var t = await Objects.CustomFields.GetCustomFieldsAsync();
+        var t = await Objects.CustomFields.GetCustomFieldsAsync(Auth.PMY);
         Assert.NotNull(t);
 
-        await t[0].LoadFull();
+        await t[0].LoadFull(Auth.PMY);
         Assert.NotNull(t[0]);
 
-        await t[0].AppendValues(new System.Collections.Generic.List<Objects.CustomFields.Field> { new Objects.CustomFields.Field() { Code = "j2", Name = "Another Another Job" } });
+        await t[0].AppendValues(new System.Collections.Generic.List<Objects.CustomFields.Field> { new Objects.CustomFields.Field() { Code = "j2", Name = "Another Another Job" } }, Auth.PMY);
     }
 
     [Fact]

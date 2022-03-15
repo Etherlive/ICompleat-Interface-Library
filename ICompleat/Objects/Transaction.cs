@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ICompleat.Objects
 {
-    public class Transaction : JsonObject
+    public class Transaction : API_Whisperer.JsonObject
     {
         #region Properties
 

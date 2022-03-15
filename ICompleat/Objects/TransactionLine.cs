@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ICompleat.Objects
 {
-    public class TransactionLine : JsonObject
+    public class TransactionLine : API_Whisperer.JsonObject
     {
         #region Properties
 

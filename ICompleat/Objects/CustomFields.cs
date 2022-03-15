@@ -2,7 +2,7 @@
 
 namespace ICompleat.Objects
 {
-    public class CustomFields : JsonObject
+    public class CustomFields : API_Whisperer.JsonObject
     {
         #region Constructors
 
@@ -29,49 +29,57 @@ namespace ICompleat.Objects
 
         #region Methods
 
-        public static async Task<CustomFields> GetCustomFieldAsync(string fieldid)
+        public static async Task<CustomFields> GetCustomFieldAsync(string fieldid, Auth auth)
         {
-            var d = await Execucte($"api/customfield/{Config._instance.tenantId}/{Config._instance.companyId}/{fieldid}");
+            var req = new API_Whisperer.Request() { url = $"api/customfield/{auth.tenantId}/{auth.companyId}/{fieldid}" };
+            var d = await req.Execute(auth);
 
-            return new CustomFields(d.GetProperty("CustomField"));
+            return new CustomFields(d.bodyAsJson.Value.GetProperty("CustomField"));
         }
 
-        public static async Task<CustomFields[]> GetCustomFieldsAsync()
+        public static async Task<CustomFields[]> GetCustomFieldsAsync(Auth auth)
         {
-            var d = await Execucte($"api/customfields/{Config._instance.tenantId}/{Config._instance.companyId}");
+            var req = new API_Whisperer.Request() { url = $"api/customfields/{auth.tenantId}/{auth.companyId}" };
+            var d = await req.Execute(auth);
 
             List<CustomFields> s = new List<CustomFields>();
-            foreach (JsonElement e in d.GetProperty("CustomFields").EnumerateArray())
+            foreach (JsonElement e in d.bodyAsJson.Value.GetProperty("CustomFields").EnumerateArray())
             {
                 s.Add(new CustomFields(e));
             }
             return s.ToArray();
         }
 
-        public async Task AppendValues(List<Field> Values)
+        public async Task AppendValues(List<Field> Values, Auth auth)
         {
-            await ReplaceValues(this.Values.Union(Values).ToList());
+            await ReplaceValues(this.Values.Union(Values).ToList(), auth);
         }
 
-        public async Task LoadFull()
+        public async Task LoadFull(Auth auth)
         {
             if (fieldid?.Length > 0)
             {
-                json = (await GetCustomFieldAsync(fieldid)).json;
+                json = (await GetCustomFieldAsync(fieldid, auth)).json;
             }
             return;
         }
 
-        public async Task ReplaceValues(List<Field> Values)
+        public async Task ReplaceValues(List<Field> Values, Auth auth)
         {
             string continuationToken = "";
 
             for (int i = 0; i < Values.Count / 100.0f; i++)
             {
-                var d = await Execucte($"api/customfield/{Config._instance.tenantId}/{Config._instance.companyId}/{fieldid}", "POST", new { CustomFieldListItems = Values.Skip(100 * i).Take(100), ContinuationToken = continuationToken });
-                continuationToken = d.GetProperty("ContinuationToken").GetString();
+                var req = new API_Whisperer.Request()
+                {
+                    url = $"api/customfield/{auth.tenantId}/{auth.companyId}/{fieldid}",
+                    method = "POST",
+                    content = new { CustomFieldListItems = Values.Skip(100 * i).Take(100), ContinuationToken = continuationToken }
+                };
+                var d = await req.Execute(auth);
+                continuationToken = d.bodyAsJson.Value.GetProperty("ContinuationToken").GetString();
             }
-            await LoadFull();
+            await LoadFull(auth);
         }
 
         #endregion Methods
