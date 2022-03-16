@@ -173,8 +173,11 @@ namespace ICompleat.Objects
         public async Task LoadDetail(Auth auth)
         {
             var req = new API_Whisperer.Request() { url = $"/api/transaction/{auth.tenantId}/{Id}/null" };
-            var d = await req.Execute(auth);
-            json = d.bodyAsJson.Value.GetProperty("Transaction");
+            var d = await req.Execute(auth, false);
+            if (d.isSuccess)
+            {
+                json = d.bodyAsJson.Value.GetProperty("Transaction");
+            }
         }
 
         #endregion Methods
