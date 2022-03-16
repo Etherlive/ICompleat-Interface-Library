@@ -170,13 +170,19 @@ namespace ICompleat.Objects
             return s.ToArray();
         }
 
-        public async Task LoadDetail(Auth auth)
+        public async Task<bool> LoadDetail(Auth auth)
         {
             var req = new API_Whisperer.Request() { url = $"/api/transaction/{auth.tenantId}/{Id}/null" };
             var d = await req.Execute(auth, false);
             if (d.isSuccess)
             {
                 json = d.bodyAsJson.Value.GetProperty("Transaction");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Load Detail Failed For Tx {Id} - {Title}");
+                return false;
             }
         }
 
