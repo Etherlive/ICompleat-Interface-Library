@@ -42,7 +42,17 @@ namespace ICompleat.Objects
 
         public double Quantity
         {
-            get { return json.GetProperty("Quantity").GetDouble(); }
+            get
+            {
+                if (json.TryGetProperty("Quantity", out JsonElement e))
+                {
+                    if (e.ValueKind != JsonValueKind.Null)
+                    {
+                        return e.GetDouble();
+                    }
+                }
+                return 0;
+            }
         }
 
         public double UnitCost
