@@ -20,6 +20,11 @@ namespace ICompleat.Objects
             get { return json.GetProperty("Id").GetString(); }
         }
 
+        public string? Name
+        {
+            get { return json.GetProperty("Name").GetString(); }
+        }
+
         public List<Field> Values
         {
             get { return this.json.GetProperty("Values").EnumerateArray().Select(x => new Field() { Code = x.GetProperty("Code").GetString(), Name = x.GetProperty("Name").GetString() }).ToList(); }
